@@ -37,7 +37,6 @@ def main():
     plt.show()
     
     
-    
 
 def checkerboard_table(df):
     '''plot map'''
