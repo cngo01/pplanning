@@ -71,14 +71,18 @@ def AStar(nSx,nSy,nTx,nTy):
     Ps=np.random.rand(15)
     for i in range(len(ob)):
         map[i,i]=Ps[i]
-    
-    
+    print('check here')
+    print(map)
+
     #map = np.array([[0.9, 0, 0],[0, 0.9, 0],[0, 0.3, 0.1]])
+    #size_map_x,size_map_y = map.shape()
     cost_map = map*100
     print(map)
-    xdim, ydim = map.shape
-    nTx = 2 # 0-based index
-    nTy = 2
+    xdim, ydim = np.shape(map)
+    print('xdim:',xdim)
+    print('ydim:',ydim)
+    nTx = xdim-1 # 0-based index
+    nTy = ydim-1
     startID = getID(nSx,nSy,ydim)
     startNode = Node(nSx,nSy,startID)
     startNode.setCost(0)
@@ -87,11 +91,11 @@ def AStar(nSx,nSy,nTx,nTy):
     #pQueue.put((0,startNode)
     priority_dict = {}
     priority_dict[0] = [startNode]
-    print(startNode)
-    print(priority_dict)
+    #print(startNode)
+    #print(priority_dict)
     cur = sorted(priority_dict.items())[0]
     curcost, curnode = cur
-    print(curnode[0])
+    #print(curnode[0])
     #pQueue.put((1,(nSx,nSy)))
     #current = pQueue.get()[1]
     #x,y = current
@@ -115,7 +119,7 @@ def AStar(nSx,nSy,nTx,nTy):
     count = 0
     finalPath = []
     while bool(priority_dict) or count < 30:
-        print('count',count)
+        #print('count',count)
         count += 1
         #currentNode = pQueue.get()[1]
         currentNode_cost, nodelist = sorted(priority_dict.items())[0]
@@ -124,7 +128,7 @@ def AStar(nSx,nSy,nTx,nTy):
         #visted_set.add(currentNode.getID())
         current_x = currentNode.getx()
         current_y = currentNode.gety()
-        print(current_x, current_y)
+        #print(current_x, current_y)
         global_variables['vistitedID_set'].add(currentNode.getID())
         # DEQUEUE FROM DICT
         if len(nodelist) > 1:
@@ -135,10 +139,10 @@ def AStar(nSx,nSy,nTx,nTy):
             finalPath = reconstructPath(currentNode,nSx,nSy)
             break
         neighbors_list = getNeighbors(current_x,current_y,xdim,ydim) # return (node, cost of motion)
-        print(neighbors_list)
+        #print(neighbors_list)
         innercount = 0
         for ( nID, neighborNode, cost_motion) in neighbors_list:
-            print('innercount',innercount)
+            #print('innercount',innercount)
             innercount += 1
             if neighborNode.checkVisited() == False:
                 new_cost = currentNode_cost + cost_motion + cost_map[neighborNode.getx()][neighborNode.gety()]
@@ -185,9 +189,9 @@ def reconstructPath(curNode,startX,startY):
     path.append((curNode.getx(),curNode.gety()))
     counter = 1
     while ((curNode.getx(),curNode.gety()) != (startX,startY)):
-        print(counter)
+        #print(counter)
         curNode = curNode.getParentNode()
-        print(curNode)
+        #print(curNode)
         path.append((curNode.getx(),curNode.gety()))
         counter += 1
     print('FINISHED')
@@ -196,16 +200,19 @@ def reconstructPath(curNode,startX,startY):
 def getID(x,y,ysize):
     return x*ysize + y
 
-
 def main():
     if len(sys.argv) != 3:
         raise Exception("usage: python pathv1.py n_grid_x n_grid_y")
-    gridsize_x = sys.argv[1]
-    gridsize_y = sys.argv[2]
+    gridsize_x = int(sys.argv[1])
+    gridsize_y = int(sys.argv[2])
+    #print(gridsize_x)
+    #print(type(gridsize_x))
+    #print(gridsize_y)
+    #print(type(gridsize_y))
     nStart_x = 0
     nStart_y = 0
-    nTarget_x = 15
-    nTarget_y = 15
+    nTarget_x = gridsize_x-1
+    nTarget_y = gridsize_y-1
     AStar(nStart_x,nStart_y,nTarget_x,nTarget_y)
     ## import drone_env.py to create gridworld
 
