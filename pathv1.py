@@ -53,7 +53,27 @@ def AStar(nSx,nSy,nTx,nTy):
     print('here')
     # CREATE RISK MAP
     #map = np.zeros((2,2))
-    map = np.array([[0.9, 0, 0],[0, 0.9, 0],[0, 0.3, 0.1]])
+    ob = np.matrix([[0, 2],
+                [2.5, 8.0],
+                [4.0, 2.0],
+                [5.0, 4.0],
+                [5.0, 5.0],
+                [5.0, 6.0],
+                [5.0, 9.0],
+                [8.0, 9.0],
+                [7.0, 9.0],
+                [7.0, 6.2],
+                [12.0, 12.0],
+                [12.0, 14.0],
+                [13.0, 13.0]
+                ])
+    map = np.zeros([15,15])
+    Ps=np.random.rand(15)
+    for i in range(len(ob)):
+        map[i,i]=Ps[i]
+    
+    
+    #map = np.array([[0.9, 0, 0],[0, 0.9, 0],[0, 0.3, 0.1]])
     cost_map = map*100
     print(map)
     xdim, ydim = map.shape
@@ -173,10 +193,6 @@ def reconstructPath(curNode,startX,startY):
     print('FINISHED')
     return path
 
-
-
-
-
 def getID(x,y,ysize):
     return x*ysize + y
 
@@ -188,8 +204,8 @@ def main():
     gridsize_y = sys.argv[2]
     nStart_x = 0
     nStart_y = 0
-    nTarget_x = 10
-    nTarget_y = 10
+    nTarget_x = 15
+    nTarget_y = 15
     AStar(nStart_x,nStart_y,nTarget_x,nTarget_y)
     ## import drone_env.py to create gridworld
 
