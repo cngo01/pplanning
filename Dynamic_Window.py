@@ -3,15 +3,11 @@
 """
 Created on Mon Dec  3 09:50:30 2018
 
-@author: cngo
-"""
-
-"""
-
 Mobile robot motion planning sample with Dynamic Window Approach
 
 author: Atsushi Sakai (@Atsushi_twi)
 
+edited: cngo
 """
 
 import math
@@ -179,7 +175,7 @@ def main():
     # initial state [x(m), y(m), yaw(rad), v(m/s), omega(rad/s)]
     x = np.array([0.0, 0.0, math.pi / 8.0, 0.0, 0.0])
     # goal position [x(m), y(m)]
-    goal = np.array([15, 15])
+    goal = np.array([14, 14])
     # obstacles [x(m) y(m), ....]
     ob = np.matrix([[0, 2],
                     [2.5, 8.0],
@@ -206,7 +202,7 @@ def main():
 #    yawrate_reso = 0.1 * math.pi / 180.0  # [rad/s]
 #    dt = 0.1  # [s]
 #    predict_time = 3.0  # [s]
-    to_goal_cost_gain = 1.0
+    to_goal_cost_gain = 2.0
 #    speed_cost_gain = 1.0
     robot_radius = 1.0  # [m]
     config = Config(to_goal_cost_gain,robot_radius)
