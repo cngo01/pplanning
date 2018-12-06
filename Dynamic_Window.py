@@ -15,7 +15,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.table import Table
 import matplotlib
-show_animation = True
+#show_animation = True
 
 
 class Config():
@@ -133,7 +133,7 @@ def calc_obstacle_cost(traj, ob, config,Ps):
 
             r = math.sqrt(dx**2 + dy**2)
             if r <= config.robot_radius:
-                r_neg=Ps[i]/r
+                r_neg=Ps[i]
                 #print(r_neg)
                 return r_neg#float("Inf")  # collisiton
 
@@ -169,7 +169,7 @@ def plot_arrow(x, y, yaw, length=0.5, width=0.1):
               head_length=width, head_width=width)
     plt.plot(x, y)
 
-def main():
+def main(ob,Ps,to_goal_cost_gain):
     
     print(__file__ + " start!!")
     # initial state [x(m), y(m), yaw(rad), v(m/s), omega(rad/s)]
@@ -177,41 +177,12 @@ def main():
     # goal position [x(m), y(m)]
     goal = np.array([14, 14])
     # obstacles [x(m) y(m), ....]
-    ob = np.matrix([[0, 2],
-                    [2.5, 8.0],
-                    [4.0, 2.0],
-                    [5.0, 4.0],
-                    [5.0, 5.0],
-                    [5.0, 6.0],
-                    [5.0, 9.0],
-                    [8.0, 9.0],
-                    [7.0, 9.0],
-                    [7.0, 6.2],
-                    [12.0, 12.0],
-                    [12.0, 14.0],
-                    [13.0, 13.0]
-                    ])
     
     u = np.array([0.0, 0.0])
-#    max_speed = 1.0  # [m/s]
-#    min_speed = -0.5  # [m/s]
-#    max_yawrate = 40.0 * math.pi / 180.0  # [rad/s]
-#    max_accel = 0.2  # [m/ss]
-#    max_dyawrate = 40.0 * math.pi / 180.0  # [rad/ss]
-#    v_reso = 0.01  # [m/s] velocity resolution
-#    yawrate_reso = 0.1 * math.pi / 180.0  # [rad/s]
-#    dt = 0.1  # [s]
-#    predict_time = 3.0  # [s]
-    to_goal_cost_gain = 2.0
-#    speed_cost_gain = 1.0
     robot_radius = 1.0  # [m]
     config = Config(to_goal_cost_gain,robot_radius)
     traj = np.array(x)
     show_animation=False
-    #Ps=np.random.rand(len(ob))*100
-    Ps=([90.17962699, 18.89381439, 20.28729583, 93.90378764, 63.28318137,
-           85.05038426, 29.05149061, 38.55092059, 87.28532153, 19.05553487,
-           20.01487473, 40.46982651, 59.25035024])
     for i in range(1000):
         u, ltraj, min_cost = dwa_control(x, u, config, goal, ob, Ps)
         #determine cost of each movement including distance.. 
@@ -247,10 +218,11 @@ def main():
     if show_animation:
         plt.plot(traj[:, 0], traj[:, 1], "-r")
         plt.grid(True)
-        plt.plot(x[0], x[1], "xr")
+        plt.plot(0, 0, "xr")
+        #plt.plot(x[0], x[1], "xr")
         plt.plot(goal[0], goal[1], "xb")
         plt.show()
     
-
+    return traj
 if __name__ == '__main__':
-    main()
+    traj=main(ob,Ps,to_goal_cost_gain)
