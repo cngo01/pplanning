@@ -101,6 +101,7 @@ def calc_final_input(x, u, dw, config, goal, ob, Ps):
             to_goal_cost = calc_to_goal_cost(traj, goal, config)
             speed_cost = config.speed_cost_gain * \
                 (config.max_speed - traj[-1, 3])
+            #print(traj[-1, 3])
             ob_cost = calc_obstacle_cost(traj, ob, config,Ps)
             #print(ob_cost)
 
@@ -133,7 +134,7 @@ def calc_obstacle_cost(traj, ob, config,Ps):
 
             r = math.sqrt(dx**2 + dy**2)
             if r <= config.robot_radius:
-                r_neg=Ps[i]
+                r_neg=Ps[i]/r
                 #print(r_neg)
                 return r_neg#float("Inf")  # collisiton
 
@@ -204,7 +205,7 @@ def main(ob,Ps,to_goal_cost_gain):
             plt.pause(0.0001)
     
         # check goal
-        if math.sqrt((x[0] - goal[0])**2 + (x[1] - goal[1])**2) <= config.robot_radius:
+        if math.sqrt((x[0] - goal[0])**2 + (x[1] - goal[1])**2) <= 0.1:#config.robot_radius:
             ob_a=np.array(ob)
             for i in range(len(ob)):
                 x = ob_a[i,0]

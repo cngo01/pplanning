@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import math
 import numpy as np
 
-show_animation = False
+show_animation = True
 
 
 class Node:
